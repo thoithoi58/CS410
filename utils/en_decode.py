@@ -13,7 +13,7 @@ api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_B
 
 def decoding(x):
     tmp = []
-    x = np.array(x).astype(int)
+    #x = np.array(x).astype(int)
     for i in x:
         tmp.append(operations[i])
     # print(tmp)

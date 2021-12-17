@@ -42,21 +42,22 @@ def main():
     algorithm = NSGA2(
         pop_size=40,
         n_offsprings=10,
-        sampling=get_sampling("real_random"),
-        crossover=get_crossover("real_sbx", prob=0.9, eta=15),
-        mutation=get_mutation("real_pm", eta=20),
+        sampling=get_sampling("int_random"),
+        crossover=get_crossover("int_sbx", prob=0.9, eta=15),
+        mutation=get_mutation("int_pm", eta=20),
         eliminate_duplicates=True
     )
     res = minimize(problem,
                algorithm,
                termination=get_termination("n_gen", 40),
-               seed=1,
-               save_history=True
+               seed=75,
+               save_history=True,
+               verbose=True
                )
 
     print("Best solution found: %s" % res.X)
     print("Function value: %s" % res.F)
-    print("Constraint violation: %s" % res.CV)
+    # print("Constraint violation: %s" %s res.CV)
 
 
 if __name__ == "__main__":
