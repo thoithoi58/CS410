@@ -9,21 +9,15 @@ operations = {
     4 : 'avg_pool_3x3',
 }
 
-api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_Bench', 'tss', fast_mode=True)
+api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_Bench', 'tss', fast_mode=True, verbose=False)
 
-def decoding(x):
-    tmp = []
-    #x = np.array(x).astype(int)
-    for i in x:
-        tmp.append(operations[i])
-    # print(tmp)
-    return np.array(tmp)
-        
-def query(x):
-    arch_test = f'|{x[0]}~0|+|{x[1]}~0|{x[1]}~1|+|{x[2]}~0|{x[2]}~1|{x[3]}~2|'
-    ind = api.query_index_by_arch(arch_test)
-    cost = api.get_cost_info(ind, dataset='cifar100', hp='12')
-    info = api.get_more_info(ind, dataset= 'cifar100',hp='12', is_random= False)
+def query(x, dataset):
+    architecture = f'|{operations[x[0]]}~0|+|{operations[x[1]]}~0|{operations[x[2]]}~1|+|{operations[x[3]]}~0|{operations[x[4]]}~1|{operations[x[5]]}~2|'
+    idx = api.query_index_by_arch(architecture)
+    cost = api.get_cost_info(idx, dataset='cifar10', hp='200')
+    info = api.get_more_info(idx, dataset= 'cifar10',hp='200', is_random= False)
     test_acc = info['test-accuracy']
-    flops = cost['flops']
+    flops = cost['params']
     return test_acc, flops
+
+
