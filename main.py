@@ -16,12 +16,13 @@ args = parser.parse_args()
 
 
 class NAS(Problem):
-  def __init__(self):
-    super().__init__(n_var=5, n_obj=2, xl=0, xu=4 , type_var = np.intc, dataset='cifar10')
+  def __init__(self, n_var=5, n_obj=2, xl=0, xu=4, dataset='cifar10'):
+    super().__init__(n_var=n_var, n_obj=n_obj, xl=xl, xu=xu , type_var = np.intc)
+    self._dataset = dataset
   def _evaluate(self, x, out, *args, **kwargs):
     objs = np.full((x.shape[0], self.n_obj), np.nan)
     for i in range(x.shape[0]):
-      _error, _flops = en_decode.query(x[i,:])
+      _error, _flops = en_decode.query(x[i,:], self._dataset)
       objs[i, 0] = 100 - _error
       objs[i, 1] = _flops
     out["F"] = objs

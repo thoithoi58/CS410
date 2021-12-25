@@ -14,8 +14,8 @@ api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_B
 def query(x, dataset):
     architecture = f'|{operations[x[0]]}~0|+|{operations[x[1]]}~0|{operations[x[2]]}~1|+|{operations[x[3]]}~0|{operations[x[4]]}~1|{operations[x[5]]}~2|'
     idx = api.query_index_by_arch(architecture)
-    cost = api.get_cost_info(idx, dataset='cifar10', hp='200')
-    info = api.get_more_info(idx, dataset= 'cifar10',hp='200', is_random= False)
+    cost = api.get_cost_info(idx, dataset=dataset, hp='200')
+    info = api.get_more_info(idx, dataset= dataset, hp='200', is_random= False)
     test_acc = info['test-accuracy']
     flops = cost['params']
     return test_acc, flops
