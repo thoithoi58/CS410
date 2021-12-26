@@ -19,5 +19,3 @@ def query(x, dataset):
     test_acc = info['test-accuracy']
     flops = cost['params']
     return test_acc, flops
-
-

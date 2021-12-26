@@ -1,6 +1,6 @@
 import numpy as np
 from pymoo.core.problem import Problem
-from utils import en_decode
+from misc import utils
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.factory import get_sampling, get_crossover, get_mutation, get_termination
 from pymoo.optimize import minimize
@@ -22,7 +22,7 @@ class NAS(Problem):
   def _evaluate(self, x, out, *args, **kwargs):
     objs = np.full((x.shape[0], self.n_obj), np.nan)
     for i in range(x.shape[0]):
-      _error, _flops = en_decode.query(x[i,:], self._dataset)
+      _error, _flops = utils.query(x[i,:], self._dataset)
       objs[i, 0] = 100 - _error
       objs[i, 1] = _flops
     out["F"] = objs
