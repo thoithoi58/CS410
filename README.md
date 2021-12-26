@@ -1,5 +1,5 @@
 # CS410.M11 - Neural networks and Genetic Algorithm
-Code accompanying the paper. All codes assume running from root directory. Please update the sys path at the beginning of the codes before running.
+This is our implementation for Bi-Objective Optimization for Neural Architecture Search Problem
 
 <p align="center">
   <img src="https://github.com/thoithoi58/CS410.M11/blob/master/img/nsga2.png" />
