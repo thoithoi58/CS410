@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from nats_bench import create
 
 operations = {
@@ -11,11 +12,18 @@ operations = {
 
 api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_Bench', 'tss', fast_mode=True, verbose=False)
 
+def read_file(file):
+    df = pd.read_csv(f'optimal_front\\{file}.csv')
+    with open(f'optimal_front\\{file}.txt', 'r') as f:
+        file = f.read().splitlines() 
+    file = [int(i) for i in file]
+    flops = [df.iloc[i,2] for i in file]
+    acc = [df.iloc[i,1] for i in file]
+    return acc, flops
+
 def query(x, dataset):
     architecture = f'|{operations[x[0]]}~0|+|{operations[x[1]]}~0|{operations[x[2]]}~1|+|{operations[x[3]]}~0|{operations[x[4]]}~1|{operations[x[5]]}~2|'
     idx = api.query_index_by_arch(architecture)
-    cost = api.get_cost_info(idx, dataset=dataset, hp='200')
-    info = api.get_more_info(idx, dataset= dataset, hp='200', is_random= False)
-    test_acc = info['test-accuracy']
-    flops = cost['params']
-    return test_acc, flops
+    flops = api.get_cost_info(idx, dataset=dataset, hp='200')['flops']
+    error = 100 - api.get_more_info(idx, dataset= dataset, hp='200', is_random= False)['test-accuracy']
+    return error, flops

@@ -5,36 +5,34 @@ parser = argparse.ArgumentParser("Find Optimal Pareto Front for different datase
 parser.add_argument('--dataset', type=str, default='cifar10', help='Choose either cifar10, cifar100 or imagenet')
 args = parser.parse_args()
 
-def check_dominance(x, y):
-    params_x = df.iloc[x, 2]
-    acc_x = df.iloc[x, 1]
-    params_y = df.iloc[y, 2]
-    acc_y = df.iloc[y, 1]
+def check_dominance(x, y, df):
+    flops_x = df.iloc[x, 2]
+    error_x = df.iloc[x, 1]
+    flops_y = df.iloc[y, 2]
+    error_y = df.iloc[y, 1]
 
-    if params_x < params_y and acc_x < acc_y:
+    if flops_x < flops_y and error_x < error_y:
         return True
-    elif params_x == params_y and acc_x < acc_y:
+    elif flops_x == flops_y and error_x < error_y:
         return True
-    elif acc_x == acc_y and params_x < params_y:
+    elif error_x == error_y and flops_x < flops_y:
         return True
     else:
         return False
 
-
 def find_optim_front(file):
-    df = pd.read_csv(f'fronts/{file}.csv')
+    df = pd.read_csv(f'optimal_front/{file}.csv')
     fronts = []
     for x in range(15625):
-    # print(x)
-    # flag = True
-    # s = time.time()
+        flag = True
         for y in range(15625):
-            # print(y)
-            if check_dominance(y,x):
-                # flag = False
+            if check_dominance(y, x, df):
+                flag = False
                 break
-        fronts.append(x)
-
+        if flag:
+            fronts.append(x)
+            print(fronts[-1])
+    return fronts
 
 def main():
     if args.dataset == 'cifar10' or args.dataset == 'cifar100' or args.dataset == 'imagenet':
@@ -42,7 +40,7 @@ def main():
     else:
         raise NameError('Invalid dataset name!')
 
-    with open('f{args.dataset}.txt', 'w') as f:
+    with open(f'optimal_front\\{args.dataset}.txt', 'a+') as f:
         for i in non_dominated_front:
             f.write(f'{i}\n')
 
