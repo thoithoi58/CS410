@@ -6,14 +6,17 @@ from pymoo.factory import get_sampling, get_crossover, get_mutation, get_termina
 from pymoo.optimize import minimize
 import argparse
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+import pickle
 
+all_pops = []
 
 parser = argparse.ArgumentParser("NSGA-II algorithm for Bi-Objective Neural Architecture Search Problem")
 parser.add_argument('--dataset', type=str, default='cifar10', help='Choose either cifar10, cifar100 or ImageNet16-120')
-parser.add_argument('--seed', type=int, help='Random seed for reproducible result')
-parser.add_argument('--pop_size', type=int, default=40, help='population size of networks')
-parser.add_argument('--n_gens', type=int, default=50, help='Nums of generation for NSGA-II')
-parser.add_argument('--n_offspring', type=int, default=40, help='number of offspring created per generation')
+parser.add_argument('--seed', type=int, default=19522298 ,help='Random seed for reproducible result')
+parser.add_argument('--pop_size', type=int, default=200, help='population size of networks')
+parser.add_argument('--n_gens', type=int, default=250, help='Nums of generation for NSGA-II')
+parser.add_argument('--n_offspring', type=int, default=20, help='number of offspring created per generation')
 args = parser.parse_args()
 
 
@@ -29,19 +32,44 @@ class NAS(Problem):
       objs[i, 1] = _flops
     out["F"] = objs
 
-def visualize(dataset, solution):
+def visualize(dataset, solution, all_pops):
   acc, flops = utils.read_file(dataset)
+  plt.rcParams.update({'font.size': 23})
   plt.rcParams["figure.figsize"] = (15,8)
   fig, ax = plt.subplots()
   plt.xlabel("Error rate")
   plt.ylabel("FLOPS")
-  ax.scatter(solution.F[:,0], solution.F[:,1], c='red', label='NSGA-II')
+  ax.scatter(solution.F[:,0], solution.F[:,1], c='red', label='Last generation')
+  ax.scatter(all_pops[0][:,0], all_pops[0][:,1], c='green', label='First generation')
   ax.scatter(acc, flops, c='blue', label="Pareto Optimal")
   ax.legend()
-  plt.figtext(0.5, 0.01, dataset, wrap=True, horizontalalignment='center', fontsize=12)
+  # plt.figtext(0.5, 0.01, dataset, wrap=True, horizontalalignment='center', fontsize=12)
   plt.savefig(f'img\\{dataset}.png')
 
-        
+def do_every_generations(algorithm):
+    # this function will be call every generation
+    # it has access to the whole algorithm class
+    gen = algorithm.n_gen
+    pop_obj = algorithm.pop.get("F")
+    all_pops.append(pop_obj)
+
+def animation(file, all_pops,num_gen=50):
+    def update(i):
+        plt.title(f'Gen {i}')
+        all_pops[generation] = all_pops[generation+i]
+        scatter.set_offsets(all_pops[generation])
+        return scatter,
+
+    fig = plt.figure(figsize=(15, 8))
+    generation = 0
+    acc, flops = utils.read_file(file)
+    plt.scatter(acc, flops, c='blue', label="Pareto Optimal")
+    scatter = plt.scatter(
+        all_pops[generation][:, 0], all_pops[generation][:, 1], s=50, c='red')
+
+    anim = FuncAnimation(fig, update, interval=300, frames=num_gen)
+    anim.save(f'img\\{file}.gif')
+
 def main():
     np.random.seed(args.seed)
 
@@ -56,20 +84,24 @@ def main():
         pop_size=args.pop_size,
         n_offsprings=args.n_offspring,
         sampling=get_sampling("int_random"),
-        crossover=get_crossover("int_sbx", prob=0.2, eta=15),
+        crossover=get_crossover("int_sbx", prob=0.9, eta=15),
         mutation=get_mutation("int_pm", eta=20),
         eliminate_duplicates=True
         )
     res = minimize(problem,
             algorithm,
             termination=get_termination("n_gen", args.n_gens),
-            seed=1,
+            seed=args.seed,
+            callback=do_every_generations,
             save_history=True,
             verbose=True
             )
-    visualize(args.dataset, res)
+    # visualize(args.dataset, res, all_pops)
+    # animation(args.dataset, all_pops, args.n_gens)
+    with open(f'populations\\{args.dataset}.pkl', 'wb') as f:
+      pickle.dump(all_pops, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
     pf = np.column_stack((utils.read_file(args.dataset)))
-    print(pf)
     igd = get_performance_indicator("igd", pf)
     print(f"IGD of {args.dataset.upper()}: ", igd.do(res.F))
 
