@@ -12,7 +12,7 @@ import pickle
 all_pops = []
 
 parser = argparse.ArgumentParser("NSGA-II algorithm for Bi-Objective Neural Architecture Search Problem")
-parser.add_argument('--dataset', type=str, default='cifar10', help='Choose either cifar10, cifar100 or ImageNet16-120')
+parser.add_argument('--dataset', type=str, default='cifar10', help='Choose either cifar10, cifar100 or imagenet')
 parser.add_argument('--seed', type=int, default=19522298 ,help='Random seed for reproducible result')
 parser.add_argument('--pop_size', type=int, default=200, help='population size of networks')
 parser.add_argument('--n_gens', type=int, default=250, help='Nums of generation for NSGA-II')
@@ -32,19 +32,6 @@ class NAS(Problem):
       objs[i, 1] = _flops
     out["F"] = objs
 
-def visualize(dataset, solution, all_pops):
-  acc, flops = utils.read_file(dataset)
-  plt.rcParams.update({'font.size': 23})
-  plt.rcParams["figure.figsize"] = (15,8)
-  fig, ax = plt.subplots()
-  plt.xlabel("Error rate")
-  plt.ylabel("FLOPS")
-  ax.scatter(solution.F[:,0], solution.F[:,1], c='red', label='Last generation')
-  ax.scatter(all_pops[0][:,0], all_pops[0][:,1], c='green', label='First generation')
-  ax.scatter(acc, flops, c='blue', label="Pareto Optimal")
-  ax.legend()
-  # plt.figtext(0.5, 0.01, dataset, wrap=True, horizontalalignment='center', fontsize=12)
-  plt.savefig(f'img\\{dataset}.png')
 
 def do_every_generations(algorithm):
     # this function will be call every generation
@@ -96,10 +83,12 @@ def main():
             save_history=True,
             verbose=True
             )
-    # visualize(args.dataset, res, all_pops)
-    # animation(args.dataset, all_pops, args.n_gens)
-    with open(f'populations\\{args.dataset}.pkl', 'wb') as f:
+
+    with open(f'populations\\{args.dataset}_pop.pkl', 'wb') as f:
       pickle.dump(all_pops, f,
+                        protocol=pickle.HIGHEST_PROTOCOL)
+    with open(f'populations\\{args.dataset}_res.pkl', 'wb') as f:
+      pickle.dump(res.F, f,
                         protocol=pickle.HIGHEST_PROTOCOL)
     pf = np.column_stack((utils.read_file(args.dataset)))
     igd = get_performance_indicator("igd", pf)

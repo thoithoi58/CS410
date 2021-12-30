@@ -13,8 +13,8 @@ operations = {
 api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_Bench', 'tss', fast_mode=True, verbose=False)
 
 def read_file(file):
-    df = pd.read_csv(f'optimal_front\\{file}.csv')
-    with open(f'optimal_front\\{file}.txt', 'r') as f:
+    df = pd.read_csv(f'fronts\\{file}.csv')
+    with open(f'fronts\\{file}.txt', 'r') as f:
         file = f.read().splitlines() 
     file = [int(i) for i in file]
     flops = [df.iloc[i,2] for i in file]
