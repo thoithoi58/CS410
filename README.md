@@ -21,7 +21,7 @@ python misc/visualize.py --dataset cifar10 --type graph
 ```
 Remember to update your projecty root path before running
 
-## Results on CIFAR-10
+## Results
 CIFAR-10                   |  CIFAR-100                | ImageNet-16-120
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/cifar10.gif)  |  ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/cifar100.gif)  |  ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/imagenet.gif)
