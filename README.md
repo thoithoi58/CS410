@@ -7,7 +7,7 @@ This is our implementation for Multi-Objective Optimization for Neural Architect
 
 ## Requirements
 ``` 
-Python >= 3.6.8, PyTorch >= 1.5.1, torchvision >= 0.6.1, pymoo == 0.5.0
+Python >= 3.6.8, PyTorch >= 1.5.1, torchvision >= 0.6.1, pymoo == 0.5.0, nats-bench
 ```
 ## Architecture search
 To run architecture search:
