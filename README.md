@@ -1,5 +1,5 @@
 # CS410.M11 - Neural networks and Genetic Algorithm
-This is our implementation for Bi-Objective Optimization for Neural Architecture Search Problem
+This is our implementation for Multi-Objective Optimization for Neural Architecture Search Problem
 
 <p align="center">
   <img src="https://github.com/thoithoi58/CS410.M11/blob/master/img/nsga2.png" />
@@ -7,7 +7,7 @@ This is our implementation for Bi-Objective Optimization for Neural Architecture
 
 ## Requirements
 ``` 
-Python >= 3.6.8, PyTorch >= 1.5.1, torchvision >= 0.6.1, pymoo == 0.5.0
+Python >= 3.6.8, PyTorch >= 1.5.1, torchvision >= 0.6.1, pymoo == 0.5.0, nats-bench
 ```
 ## Architecture search
 To run architecture search:
@@ -21,7 +21,7 @@ python misc/visualize.py --dataset cifar10 --type graph
 ```
 Remember to update your projecty root path before running
 
-## Results on CIFAR-10
+## Results
 CIFAR-10                   |  CIFAR-100                | ImageNet-16-120
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/cifar10.gif)  |  ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/cifar100.gif)  |  ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/imagenet.gif)
