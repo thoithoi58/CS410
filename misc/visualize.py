@@ -25,8 +25,6 @@ def read_pickle(file):
 
 def visualize(dataset, res, all_pops):
   acc, flops = utils.read_file(dataset)
-  plt.rcParams.update({'font.size': 23})
-  plt.rcParams["figure.figsize"] = (15,8)
   fig = plt.figure()
   plt.xlabel("Error rate")
   plt.ylabel("FLOPS")
@@ -34,7 +32,7 @@ def visualize(dataset, res, all_pops):
   plt.scatter(all_pops[0][:,0], all_pops[0][:,1], c='green', label='First generation')
   plt.scatter(acc, flops, c='blue', label="Pareto Optimal front")
   plt.legend()
-  fig.savefig(f'img\\{dataset}.png')
+  fig.savefig(f'img\\{dataset}.png', bbox_inches='tight')
 
 
 def animation(dataset, all_pops,num_gen=50):
@@ -55,6 +53,9 @@ def animation(dataset, all_pops,num_gen=50):
     anim.save(f'img\\{dataset}.gif')
 
 def main():
+    plt.rcParams.update({'font.size': 23})
+    plt.rcParams["figure.figsize"] = (15,8)
+    plt.tight_layout()
     if args.dataset == 'cifar10' or args.dataset == 'cifar100' or args.dataset == 'imagenet':
         pass
     else:
