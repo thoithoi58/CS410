@@ -24,8 +24,11 @@ class NAS(Problem):
   def __init__(self, n_var=6, n_obj=2, xl=0, xu=4, dataset='cifar10'):
     super().__init__(n_var=n_var, n_obj=n_obj, xl=xl, xu=xu , type_var = np.intc)
     self._dataset = dataset
+
   def _evaluate(self, x, out, *args, **kwargs):
     objs = np.full((x.shape[0], self.n_obj), np.nan)
+
+    #Iterate over each of created population and query the error rate and flops for each individual
     for i in range(x.shape[0]):
       _error, _flops = utils.query(x[i,:], self._dataset)
       objs[i, 0] = _error
@@ -36,26 +39,10 @@ class NAS(Problem):
 def do_every_generations(algorithm):
     # this function will be call every generation
     # it has access to the whole algorithm class
-    gen = algorithm.n_gen
     pop_obj = algorithm.pop.get("F")
+    #save currently population for visualize
     all_pops.append(pop_obj)
 
-def animation(file, all_pops,num_gen=50):
-    def update(i):
-        plt.title(f'Gen {i}')
-        all_pops[generation] = all_pops[generation+i]
-        scatter.set_offsets(all_pops[generation])
-        return scatter,
-
-    fig = plt.figure(figsize=(15, 8))
-    generation = 0
-    acc, flops = utils.read_file(file)
-    plt.scatter(acc, flops, c='blue', label="Pareto Optimal")
-    scatter = plt.scatter(
-        all_pops[generation][:, 0], all_pops[generation][:, 1], s=50, c='red')
-
-    anim = FuncAnimation(fig, update, interval=300, frames=num_gen)
-    anim.save(f'img\\{file}.gif')
 
 def main():
     np.random.seed(args.seed)
@@ -83,6 +70,8 @@ def main():
             save_history=True,
             verbose=True
             )
+
+    #Save all populations and function objective values to pickle file
 
     with open(f'populations\\{args.dataset}_pop.pkl', 'wb') as f:
       pickle.dump(all_pops, f,

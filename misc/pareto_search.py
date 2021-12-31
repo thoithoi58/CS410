@@ -1,3 +1,7 @@
+import sys
+# update your projecty root path before running
+sys.path.insert(0, 'C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project')
+
 import pandas as pd
 import argparse
 
