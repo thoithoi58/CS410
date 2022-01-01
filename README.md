@@ -24,7 +24,7 @@ Remember to update your projecty root path before running
 ## IGD Metrics
 |     | CIFAR-10 | CIFAR-100 | ImageNet-16 | 
 |-----|----------|-----------|-------------|
-| IGD | 0.004    | 0.03      | 0.03        |
+| **IGD** | 0.004    | 0.03      | 0.03        |
 
 ## Results
 CIFAR-10                   |  CIFAR-100                | ImageNet-16-120
