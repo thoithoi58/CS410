@@ -25,4 +25,7 @@ Remember to update your projecty root path before running
 CIFAR-10                   |  CIFAR-100                | ImageNet-16-120
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/cifar10.gif)  |  ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/cifar100.gif)  |  ![](https://github.com/thoithoi58/CS410.M11/blob/master/img/imagenet.gif)
-
+## IGD Metrics
+|     | CIFAR-10 | CIFAR-100 | ImageNet-16 | 
+|-----|----------|-----------|-------------|
+| IGD | 0.004    | 0.03      | 0.03        |
