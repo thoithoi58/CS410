@@ -14,7 +14,7 @@ all_pops = []
 parser = argparse.ArgumentParser("NSGA-II algorithm for Bi-Objective Neural Architecture Search Problem")
 parser.add_argument('--dataset', type=str, default='cifar10', help='Choose either cifar10, cifar100 or imagenet')
 parser.add_argument('--seed', type=int, default=19522298 ,help='Random seed for reproducible result')
-parser.add_argument('--pop_size', type=int, default=200, help='population size of networks')
+parser.add_argument('--pop_size', type=int, default=200, help='Initial population size of networks')
 parser.add_argument('--n_gens', type=int, default=250, help='Nums of generation for NSGA-II')
 parser.add_argument('--n_offspring', type=int, default=20, help='number of offspring created per generation')
 args = parser.parse_args()
