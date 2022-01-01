@@ -1,6 +1,6 @@
 import sys
 # update your projecty root path before running
-sys.path.insert(0, 'C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project')
+sys.path.insert(0, '/content/CS410.M11')
 
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -16,9 +16,9 @@ parser.add_argument('--n_gens', type=int, default=250, help='Only for animation,
 args = parser.parse_args()
 
 def read_pickle(file):
-    with open(f'populations\\{file}_pop.pkl', 'rb') as f:
+    with open(f'populations/{file}_pop.pkl', 'rb') as f:
         pop = pickle.load(f)
-    with open(f'populations\\{file}_res.pkl', 'rb') as f:
+    with open(f'populations/{file}_res.pkl', 'rb') as f:
         res = pickle.load(f)
     return pop, res
 
@@ -32,7 +32,7 @@ def visualize(dataset, res, all_pops):
   plt.scatter(all_pops[0][:,0], all_pops[0][:,1], c='green', label='First generation')
   plt.scatter(acc, flops, c='blue', label="Pareto Optimal front")
   plt.legend()
-  fig.savefig(f'img\\{dataset}.png', bbox_inches='tight')
+  fig.savefig(f'img/{dataset}.png', bbox_inches='tight')
 
 
 def animation(dataset, all_pops,num_gen=50):
@@ -50,7 +50,7 @@ def animation(dataset, all_pops,num_gen=50):
         all_pops[generation][:, 0], all_pops[generation][:, 1], s=50, c='red')
 
     anim = FuncAnimation(fig, update, interval=300, frames=num_gen)
-    anim.save(f'img\\{dataset}.gif')
+    anim.save(f'img/{dataset}.gif')
 
 def main():
     plt.rcParams.update({'font.size': 23})

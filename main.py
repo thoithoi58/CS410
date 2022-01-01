@@ -73,10 +73,10 @@ def main():
 
     #Save all populations and function objective values to pickle file
 
-    with open(f'populations\\{args.dataset}_pop.pkl', 'wb') as f:
+    with open(f'populations/{args.dataset}_pop.pkl', 'wb') as f:
       pickle.dump(all_pops, f,
                         protocol=pickle.HIGHEST_PROTOCOL)
-    with open(f'populations\\{args.dataset}_res.pkl', 'wb') as f:
+    with open(f'populations/{args.dataset}_res.pkl', 'wb') as f:
       pickle.dump(res.F, f,
                         protocol=pickle.HIGHEST_PROTOCOL)
     pf = np.column_stack((utils.read_file(args.dataset)))

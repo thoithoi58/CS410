@@ -1,6 +1,6 @@
 import sys
 # update your projecty root path before running
-sys.path.insert(0, 'C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project')
+sys.path.insert(0, '/content/CS410.M11')
 
 from nats_bench import create
 import argparse
@@ -10,14 +10,14 @@ parser.add_argument('--dataset', type=str, default='cifar10', help='Choose eithe
 args = parser.parse_args()
 
 
-api = create('C:\\Users\\owcap\\Documents\\Learning\\CS410\\Final Project\\NAS_Bench', 'tss', fast_mode=True)
+api = create('/content/CS410.M11/NAS_Bench', 'tss', fast_mode=True)
 
 def save(file):
     if file == 'cifar10' or file == 'cifar100':
         dataset = file
     else:
         dataset = 'ImageNet16-120'
-    with open(f'fronts\\{file}.csv', 'a') as f:
+    with open(f'fronts/{file}.csv', 'a') as f:
         f.write('idx,error,flop\n')
         for i in range(15625):
             # print(i)
